@@ -9,7 +9,7 @@
 
 Simple NPM package scaffolding generator for [Yeoman](http://yeoman.io).
 
-Not yet ready for public usage.
+
 
 If you have different needs regarding the functionality, please add a [feature request](https://github.com/alykoshin/generator-mini-package/issues).
 

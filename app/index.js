@@ -159,75 +159,80 @@ var MiniNpmGenerator = yeoman.generators.Base.extend({
     }.bind(this));
   },
 
-  project:     function () {
-    //mkdirp('test');
-    //
-    //this.template('package.json',  'package.json');
-    //this.template('README.md',     'README.md');
-    //this.template('LICENSE',       'LICENSE');
-    //this.template('test-index.js', 'test/index.test.js');
-    //
-    //this.template('index.js', 'index.js');
-    //this.template('cli.js',   'cli.js');
-    //
-    //this.copy('_editorconfig', '.editorconfig');
-    //this.copy('_eslintrc',       '.eslintrc');
-    //this.copy('_eslintignore',   '.eslintignore');
-    //this.copy('_gitattributes', '.gitattributes');
-    //this.copy('_gitignore', '.gitignore');
-    //
-    //this.copy('_jshintrc', '.jshintrc');
-    //this.copy('_jsinspectrc', '.jsinspectrc');
-    //this.copy('_travis.yml', '.travis.yml');
-    //
+  writing: function () {
+    this._write();
+  },
+
+  _write: function() {
+    mkdirp('test');
+
+    this.template('package.json',  'package.json');
+    this.template('README.md',     'README.md');
+    this.template('LICENSE',       'LICENSE');
+    this.template('test-index.js', 'test/index.test.js');
+
+    this.template('index.js',   'index.js');
+    this.template('cli.js',     'cli.js');
+
+    this.copy('_editorconfig',  '.editorconfig');
+    this.copy('_eslintrc',      '.eslintrc');
+    this.copy('_eslintignore',  '.eslintignore');
+    this.copy('_gitattributes', '.gitattributes');
+    this.copy('_gitignore',     '.gitignore');
+
+    this.copy('_jshintrc',      '.jshintrc');
+    this.copy('_jsinspectrc',   '.jsinspectrc');
+    this.copy('_travis.yml',    '.travis.yml');
+
     if (this.git) {
       this._createRepo();
     }
   },
 
   _createRepo: function () {
-    //var github = new GithubApi({
-    //  version: '3.0.0' // required
-    //});
-    //
-    //github.authenticate({
-    //  type:  'oauth',
-    //  token: this.githubToken,
-    //}, function (err, res) {
-    //  console.log('github.authenticate(): err:', err, 'res:', JSON.stringify(res));
-    //});
-    //
-    //github.repos.create({
-    //  user:        this.githubName,
-    //  name:        this.pkgName,
-    //  description: this.pkgDesc
-    //}, function (err, res) {
-    //  console.log('github.repos.create(): err:', err, 'res:', JSON.stringify(res));
-    //
+    var github = new GithubApi({
+      version: '3.0.0' // required
+    });
+
+    github.authenticate({
+      type:  'oauth',
+      token: this.githubToken,
+    }, function (err, res) {
+      console.log('github.authenticate(): err:', err, 'res:', JSON.stringify(res));
+    });
+
+    github.repos.create({
+      user:        this.githubName,
+      name:        this.pkgName,
+      description: this.pkgDesc
+    }, function (err, res) {
+      console.log('github.repos.create(): err:', err, 'res:', JSON.stringify(res));
+
       this._gitInitAndPush(this.githubName, this.pkgName);
-    //});
+    });
   },
 
   _gitInitAndPush: function(githubName, pkgName) {
+    var commands = [
+      'git init',
+      util.format('git remote add origin https://github.com/%s/%s.git', githubName, pkgName),
+      'git add --all',
+      'git commit -am "First commit"',
+      'git push --set-upstream origin master'
+    ];
 
-    this.log('git init');
-    shell.exec('git init');
-    this.log('git remote add origin ...');
-    shell.exec(util.format('git remote add origin https://github.com/%s/%s.git', githubName, pkgName));
-    this.log('git add --all');
-    shell.exec('git add --all');
-    this.log('git commit -am "First commit"');
-    shell.exec('git commit -am "First commit"');
-    this.log('git push --set-upstream origin master');
-    shell.exec('git push --set-upstream origin master');
+    commands.forEach(function(cmd) {
+      this.log(cmd);
+      shell.exec(cmd);
+    });
     this.log('git done');
   },
 
   install: function() {
-    //if (!this.options[ 'skip-install' ]) {
-    //  this.installDependencies();
-    //  //this.npmInstall();
-    //}
+    if (!this.options[ 'skip-install' ]) {
+      this.installDependencies();
+      //this.npmInstall();
+    }
   }
 });
 
