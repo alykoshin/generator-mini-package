@@ -88,9 +88,6 @@ var MiniNpmGenerator = yeoman.generators.Base.extend({
     var done = this.async();
 
     var prompts = [{
-      name:    'pkgDesc',
-      message: 'Package description?'
-    }, {
       name:     'githubName',
       message:  'What is your github username (git config --global github.user)?',
       default:  (this.gitconfig.github && this.gitconfig.github.user) || '',
@@ -105,9 +102,14 @@ var MiniNpmGenerator = yeoman.generators.Base.extend({
         return str.length > 0;
       }
     }, {
+      name:    'pkgDesc',
+      message: 'Package description?',
+      store   : true
+    }, {
       type:    'input',
       name:    'keywords',
       message: 'Package keywords',
+      store   : true,
       filter:  function (value) {
         if (typeof value === 'string') {
           value = value.split(',');
@@ -178,7 +180,6 @@ var MiniNpmGenerator = yeoman.generators.Base.extend({
     //this.copy('_jsinspectrc', '.jsinspectrc');
     //this.copy('_travis.yml', '.travis.yml');
     //
-    console.log('111',this.git);
     if (this.git) {
       this._createRepo();
     }
@@ -203,12 +204,12 @@ var MiniNpmGenerator = yeoman.generators.Base.extend({
     //}, function (err, res) {
     //  console.log('github.repos.create(): err:', err, 'res:', JSON.stringify(res));
     //
-    console.log('222',this.git);
       this._gitInitAndPush(this.githubName, this.pkgName);
     //});
   },
 
   _gitInitAndPush: function(githubName, pkgName) {
+
     this.log('git init');
     shell.exec('git init');
     this.log('git remote add origin ...');
