@@ -1,8 +1,7 @@
 {
 
   "ecmaFeatures": {
-    "globalReturn": true,
-    "modules": true
+    "globalReturn": true
   },
 
   "env": {
