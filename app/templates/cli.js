@@ -32,6 +32,6 @@ if (argv.indexOf('--version') !== -1) {
 }
 
 
-<%= pkgName %>(argv[0], function() {
+<%= pkgVarName %>(argv[0], function() {
 
 });

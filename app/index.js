@@ -108,19 +108,26 @@ var MiniNpmGenerator = yeoman.generators.Base.extend({
     }, {
       type:    'input',
       name:    'keywords',
-      message: 'Package keywords',
+      message: 'Package keywords?',
       store   : true,
       filter:  function (value) {
         if (typeof value === 'string') {
           value = value.split(',');
         }
-        return value
+        value = value
           .map(function (val) {
-            return val.trim();
+            val = val.replace(/[\s'"]/g,''); // Remove spaces, single and double quotes
+            return val;//.trim();
           })
           .filter(function (val) {
             return val.length > 0;
-          });
+          })
+          //.map(function (val) {              // Add double quotes
+          //  return '"' + val + '"';
+          //})
+          ;
+        console.log('keywords:', value);
+        return value;
       }
     }, {
       name:     'fullName',
@@ -139,7 +146,7 @@ var MiniNpmGenerator = yeoman.generators.Base.extend({
     }, {
       type: 'confirm',
       name: 'git',
-      message: 'Create new Git repository for this project?',
+      message: 'Create new GitHub repository for this project?',
       default: false
     }];
 
@@ -169,7 +176,7 @@ var MiniNpmGenerator = yeoman.generators.Base.extend({
     this.template('package.json',  'package.json');
     this.template('README.md',     'README.md');
     this.template('LICENSE',       'LICENSE');
-    this.template('test-index.js', 'test/index.test.js');
+    this.template('test/index.js', 'test/index.js');
 
     this.template('index.js',   'index.js');
     this.template('cli.js',     'cli.js');
@@ -190,6 +197,8 @@ var MiniNpmGenerator = yeoman.generators.Base.extend({
   },
 
   _createRepo: function () {
+    var self = this;
+
     var github = new GithubApi({
       version: '3.0.0' // required
     });
@@ -197,8 +206,6 @@ var MiniNpmGenerator = yeoman.generators.Base.extend({
     github.authenticate({
       type:  'oauth',
       token: this.githubToken,
-    }, function (err, res) {
-      console.log('github.authenticate(): err:', err, 'res:', JSON.stringify(res));
     });
 
     github.repos.create({
@@ -208,11 +215,13 @@ var MiniNpmGenerator = yeoman.generators.Base.extend({
     }, function (err, res) {
       console.log('github.repos.create(): err:', err, 'res:', JSON.stringify(res));
 
-      this._gitInitAndPush(this.githubName, this.pkgName);
+      self._gitInitAndPush(self.githubName, self.pkgName);
     });
   },
 
   _gitInitAndPush: function(githubName, pkgName) {
+    var self = this;
+
     var commands = [
       'git init',
       util.format('git remote add origin https://github.com/%s/%s.git', githubName, pkgName),
@@ -222,16 +231,16 @@ var MiniNpmGenerator = yeoman.generators.Base.extend({
     ];
 
     commands.forEach(function(cmd) {
-      this.log(cmd);
+      self.log(cmd);
       shell.exec(cmd);
     });
-    this.log('git done');
+    self.log('git done');
   },
 
   install: function() {
     if (!this.options[ 'skip-install' ]) {
-      this.installDependencies();
-      //this.npmInstall();
+      //this.installDependencies();
+      this.npmInstall();
     }
   }
 });

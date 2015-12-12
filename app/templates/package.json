@@ -22,7 +22,9 @@
     "__major-release": "npm test && npm run _major-release && npm run _push",
     "coverall": "cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js"
   },
-  "keywords": [ <%= keywords %> ],
+  "keywords": [
+      "<%- keywords %>"
+  ],
   "author": "<%= fullName %> <<%= emailAddress %>>",
   "license": "MIT",
   "repository": {
