@@ -15,7 +15,7 @@ If you have different needs regarding the functionality, please add a [feature r
 ## Installation
 
 ```sh
-npm install --save <%= pkgName %>>
+npm install --save <%= pkgName %>
 ```
 
 ## Usage
