@@ -43,6 +43,7 @@ var MiniNpmGenerator = yeoman.generators.Base.extend({
   prompting:  function () {
     var done = this.async();
     this.log(chalk.magenta('This Yeoman generator will scaffold new npm package for you.'));
+    this.log('Make sure you \'mkdir <package-name>; cd <package-name>\'.');
 
     this._promptPkgName();
   },
@@ -148,6 +149,11 @@ var MiniNpmGenerator = yeoman.generators.Base.extend({
       name: 'git',
       message: 'Create new GitHub repository for this project?',
       default: false
+    }, {
+      type: 'confirm',
+      name: 'cli',
+      message: 'Support CLI?',
+      default: false
     }];
 
     this.prompt(prompts, function (props) {
@@ -159,6 +165,7 @@ var MiniNpmGenerator = yeoman.generators.Base.extend({
       this.fullName     = props.fullName;
       this.emailAddress = props.emailAddress;
       this.git          = props.git;
+      this.cli          = props.cli;
 
       this.currentYear = new Date().getFullYear();
 
@@ -179,17 +186,20 @@ var MiniNpmGenerator = yeoman.generators.Base.extend({
     this.template('test/index.js', 'test/index.js');
 
     this.template('index.js',   'index.js');
-    this.template('cli.js',     'cli.js');
+    if (this.cli) {
+      this.template('cli.js',   'cli.js');
+    }
 
     this.copy('_editorconfig',  '.editorconfig');
     this.copy('_eslintrc',      '.eslintrc');
     this.copy('_eslintignore',  '.eslintignore');
     this.copy('_gitattributes', '.gitattributes');
     this.copy('_gitignore',     '.gitignore');
-
     this.copy('_jshintrc',      '.jshintrc');
     this.copy('_jsinspectrc',   '.jsinspectrc');
     this.copy('_travis.yml',    '.travis.yml');
+
+    this.copy('inch.json',      'inch.json');
 
     if (this.git) {
       this._createRepo();

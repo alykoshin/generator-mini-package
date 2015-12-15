@@ -1,9 +1,12 @@
 [![npm version](https://badge.fury.io/js/generator-mini-package.svg)](http://badge.fury.io/js/generator-mini-package)
 [![Build Status](https://travis-ci.org/alykoshin/generator-mini-package.svg)](https://travis-ci.org/alykoshin/generator-mini-package)
-[![Coverage Status](http://coveralls.io/repos/alykoshin/generator-mini-package/badge.svg?branch=master&service=github)](http://coveralls.io/github/alykoshin/generator-mini-package?branch=master)
+[![Coverage Status](https://coveralls.io/repos/alykoshin/generator-mini-package/badge.svg?branch=master&service=github)](https://coveralls.io/github/alykoshin/generator-mini-package?branch=master)
+[![Code Climate](https://codeclimate.com/github/alykoshin/generator-mini-package/badges/gpa.svg)](https://codeclimate.com/github/alykoshin/generator-mini-package)
+[![Inch CI](https://inch-ci.org/github/alykoshin/generator-mini-package.svg?branch=master)](https://inch-ci.org/github/alykoshin/generator-mini-package)
 
 [![Dependency Status](https://david-dm.org/alykoshin/generator-mini-package/status.svg)](https://david-dm.org/alykoshin/generator-mini-package#info=dependencies)
 [![devDependency Status](https://david-dm.org/alykoshin/generator-mini-package/dev-status.svg)](https://david-dm.org/alykoshin/generator-mini-package#info=devDependencies)
+
 
 # generator-mini-npm
 
@@ -13,7 +16,8 @@ Simple NPM package scaffolding generator for [Yeoman](http://yeoman.io).
 
 If you have different needs regarding the functionality, please add a [feature request](https://github.com/alykoshin/generator-mini-package/issues).
 
-## Installation
+## Ins
+tallation
 
 ```sh
 npm install --save generator-mini-package
@@ -27,3 +31,16 @@ yo mini-package
 
 Not yet ready for public usage.
 
+
+## Credits
+[Alexander](https://github.com/alykoshin/)
+
+
+## Links to package pages:
+
+[github.com](https://github.com/alykoshin/generator-mini-package) &nbsp; [npmjs.com](https://www.npmjs.com/package/generator-mini-package) &nbsp; [travis-ci.org](https://travis-ci.org/alykoshin/generator-mini-package) &nbsp; [coveralls.io](https://coveralls.io/github/alykoshin/generator-mini-package) &nbsp; [inch-ci.org](https://inch-ci.org/github/alykoshin/generator-mini-package)
+
+
+## License
+
+MIT
