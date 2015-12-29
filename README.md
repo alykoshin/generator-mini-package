@@ -16,8 +16,7 @@ Simple NPM package scaffolding generator for [Yeoman](http://yeoman.io).
 
 If you have different needs regarding the functionality, please add a [feature request](https://github.com/alykoshin/generator-mini-package/issues).
 
-## Ins
-tallation
+## Installation
 
 ```sh
 npm install --save generator-mini-package
