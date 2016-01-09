@@ -8,7 +8,7 @@
 [![devDependency Status](https://david-dm.org/alykoshin/generator-mini-package/dev-status.svg)](https://david-dm.org/alykoshin/generator-mini-package#info=devDependencies)
 
 
-# generator-mini-npm
+# generator-mini-package
 
 Simple NPM package scaffolding generator for [Yeoman](http://yeoman.io).
 
@@ -28,7 +28,7 @@ npm install --save generator-mini-package
 yo mini-package
 ```
 
-Not yet ready for public usage.
+Not yet ready for public use.
 
 
 ## Credits

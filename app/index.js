@@ -183,6 +183,7 @@ var MiniNpmGenerator = yeoman.generators.Base.extend({
     this.template('package.json',  'package.json');
     this.template('README.md',     'README.md');
     this.template('LICENSE',       'LICENSE');
+    this.template('lib/index.js',  'lib/index.js');
     this.template('test/index.js', 'test/index.js');
 
     this.template('index.js',   'index.js');

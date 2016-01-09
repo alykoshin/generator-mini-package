@@ -2,7 +2,7 @@
   "name": "<%= pkgName %>",
   "version": "0.0.0",
   "description": "<%= pkgDesc %>",
-  "main": "app/index.js",
+  "main": "./index.js",
   "scripts": {
     "lint": "eslint -f unix .",
     "inspect": "jsinspect",
