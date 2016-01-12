@@ -29,7 +29,7 @@ var copyTemplate = function(fileName) {
 };
 
 
-var MiniNpmGenerator = yeoman.generators.Base.extend({
+var MiniNpmGenerator = yeoman.Base.extend({
   initializing: function () {
     this.pkg       = require('../package.json');
     this.gitconfig = gitconfig.sync();
