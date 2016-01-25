@@ -5,14 +5,20 @@
   "main": "app/index.js",
   "scripts": {
     "nsp": "nsp check",
+    "_deps-check":    "npm-check-updates --error-level 2",
+
+    "_deps-update":   "echo '* Updating packages versions... '; npm-check-updates -u --upgradeAll --error-level 1 && npm run _deps-update",
+    "_check-changes": "echo '* Checking if git directory is clean... '; bash -c '[[ -z $(git status -uno --porcelain) ]]'",
+    "update-deps": "npm run _check-changes && npm install && git commit -am 'updated deps'",
+
     "lint": "eslint -f unix .",
     "inspect": "jsinspect",
-    "_pretest": "npm run inspect && npm run nsp",
-    "pretest": "npm run lint && npm run inspect && npm run nsp",
+    "pretest": "npm run lint && npm run inspect && npm run nsp && npm run _deps-check",
     "test": "echo \"Warning: no test specified\" && exit 0",
     "_test": "echo \"Error: no test specified\" && exit 1",
-    "__test": "./node_modules/istanbul/lib/cli.js cover ./node_modules/mocha/bin/_mocha -- -R spec ./test/*",
+    "__test": "node ./node_modules/istanbul/lib/cli.js cover ./node_modules/mocha/bin/_mocha -- -R spec ./test/*",
     "test-travis": "./node_modules/istanbul/lib/cli.js cover ./node_modules/mocha/bin/_mocha -- -R spec ./test/*",
+
     "_commit": "git commit -am \"commit by 'npm run commit'\"",
     "_push": "git push --follow-tags",
     "commit-and-push": "npm run _commit && npm test && npm run _push",
@@ -47,19 +53,19 @@
     "git-config": "0.0.7",
     "gitconfig": "^1.3.1",
     "github": "^0.2.4",
-    "lodash": "^3.10.1",
+    "lodash": "^4.0.0",
     "mkdirp": "^0.5.1",
-    "npm-name": "^2.0.0",
+    "npm-name": "^2.1.0",
     "shelljs": "^0.5.3",
     "slug": "^0.9.1",
-    "yeoman-generator": "^0.22.1"
+    "yeoman-generator": "^0.22.4"
   },
   "devDependencies": {
     "chai": "^3.4.1",
     "coveralls": "^2.11.6",
     "eslint": "^1.10.3",
-    "istanbul": "^0.4.1",
-    "jshint": "^2.9.1-rc1",
+    "istanbul": "^0.4.2",
+    "jshint": "^2.9.1",
     "jsinspect": "^0.7.2",
     "mocha": "^2.3.4",
     "mockery": "^1.4.0"
