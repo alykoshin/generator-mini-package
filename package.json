@@ -9,14 +9,15 @@
 
     "_deps-update":   "echo '* Updating packages versions... '; npm-check-updates -u --upgradeAll --error-level 1 && npm install",
     "_check-changes": "echo '* Checking if git directory is clean... '; bash -c '[[ -z $(git status -uno --porcelain) ]]'",
-    "update-deps": "npm run _check-changes && npm run _deps-update && git commit -am 'updated deps'",
+    "update-deps": "npm run _check-changes && npm run _deps-update && npm test && git commit -am 'updated deps'",
 
     "lint": "eslint -f unix .",
     "inspect": "jsinspect",
     "pretest": "npm run lint && npm run inspect && npm run nsp && npm run _deps-check",
-    "test": "echo \"Warning: no test specified\" && exit 0",
-    "_test": "echo \"Error: no test specified\" && exit 1",
-    "__test": "node ./node_modules/istanbul/lib/cli.js cover ./node_modules/mocha/bin/_mocha -- -R spec ./test/*",
+    "_test": "echo \"Warning: no test specified\" && exit 0",
+    "test": "npm run _test",
+    "__test": "echo \"Error: no test specified\" && exit 1",
+    "___test": "node ./node_modules/istanbul/lib/cli.js cover ./node_modules/mocha/bin/_mocha -- -R spec ./test/*",
     "test-travis": "./node_modules/istanbul/lib/cli.js cover ./node_modules/mocha/bin/_mocha -- -R spec ./test/*",
 
     "_commit": "git commit -am \"commit by 'npm run commit'\"",
