@@ -3,6 +3,9 @@
   "version": "0.0.0",
   "description": "<%= pkgDesc %>",
   "main": "./index.js",
+  "engines": {
+    "node": ">=0.10"
+  },
   "scripts": {
     "nsp": "nsp check",
     "_deps-check": "npm-check-updates --error-level 2",
@@ -42,9 +45,11 @@
   },
   "homepage": "https://github.com/<%= githubName %>/<%= pkgName %>",
   "dependencies": {
+    "minimist": "^1.2.0"
   },
   "devDependencies": {
     "chai": "^3.4.1",
+    "chai-things": "^0.2.0",
     "coveralls": "^2.11.4",
     "eslint": "^1.10.3",
     "istanbul": "^0.4.1",

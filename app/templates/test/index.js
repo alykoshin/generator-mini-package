@@ -2,10 +2,12 @@
 
 'use strict';
 
-var chai = require('chai'),
-    assert = chai.assert,
-    expect = chai.expect,
-    should = chai.should();
+var chai = require('chai');
+var assert = chai.assert;
+var expect = chai.expect;
+chai.should();
+chai.use(require('chai-things')); //http://chaijs.com/plugins/chai-things
+
 
 describe('<%= pkgName %>', function () {
 
@@ -13,11 +15,11 @@ describe('<%= pkgName %>', function () {
 
   });
 
-  beforeEach('before', function () {
+  beforeEach('beforeEach', function () {
 
   });
 
-  afterEach('after', function () {
+  afterEach('afterEach', function () {
 
   });
 

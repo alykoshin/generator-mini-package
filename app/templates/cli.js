@@ -1,37 +1,46 @@
 #!/usr/bin/env node
 'use strict';
 
+var argv = require('minimist')(process.argv.slice(2));
 var pkg = require('./package.json');
 var <%= pkgVarName %> = require('./');
-var argv = process.argv.slice(2);
+
 
 function help() {
   console.log([
     '',
-    '  ' + pkg.description,
+    '  Package name: ' + pkg.name,
+    '',
+    '  Package description: ' + pkg.description,
     '',
     '  Example:',
-    '    <%= pkgName %> ',
+    '    node node_modules/' + pkg.name + '/cli.js',
     ''
   ].join('\n'));
 }
 
 function version() {
-  console.log('package version:', pkg.version);
-  console.log('process.version:', process.version);
+  console.log([
+    '* version info:',
+    '* package.json version: ' + pkg.version,
+    '* process.version: ' + process.version,
+    ''
+  ].join('\n'));
 }
 
-if (argv.indexOf('--help') !== -1) {
+if (argv.h || argv.help) {
   help();
   return;
 }
 
-if (argv.indexOf('--version') !== -1) {
+if (argv.v || argv.version) {
   version();
   return;
 }
 
 
-<%= pkgVarName %>(argv[0], function() {
+var main = require('./');
+
+main.exec(argv[0], function() {
 
 });
