@@ -1,6 +1,6 @@
 'use strict';
 
-var yeoman = require('yeoman-generator');
+var Generator = require('yeoman-generator');
 
 var util = require('util');
 var chalk = require('chalk');
@@ -30,7 +30,9 @@ var copyTemplate = function(fileName) {
 };
 
 
-var MiniNpmGenerator = yeoman.Base.extend({
+//var MiniNpmGenerator = yeoman.Base.extend({
+var MiniNpmGenerator = class extends Generator({
+
   initializing: function () {
     this.pkg       = require('../package.json');
     this.gitconfig = gitconfig.sync();
