@@ -4,7 +4,8 @@ var yeoman = require('yeoman-generator');
 
 var util = require('util');
 var chalk = require('chalk');
-var slug = require('slug');
+//var slug = require('slug');
+var slugify = require('slugify');
 var gitconfig = require('git-config');
 var _ = require('lodash');
 var mkdirp = require('mkdirp');
@@ -52,7 +53,7 @@ var MiniNpmGenerator = yeoman.Base.extend({
     var prompts = [{
       name:     'pkgName',
       message:  'What is the name of the package?',
-      default:  slug(this.appname),
+      default:  slugify(this.appname),
       validate: function (str) {
         return str.length > 0;
       }
@@ -76,7 +77,7 @@ var MiniNpmGenerator = yeoman.Base.extend({
       }
     }];
     this.prompt(prompts, function (props) {
-      this.pkgName    = slug(props.pkgName);
+      this.pkgName    = slugify(props.pkgName);
       this.pkgVarName = _.camelCase(props.pkgName);
 
       return this._promptOther();
