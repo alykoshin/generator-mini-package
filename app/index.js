@@ -14,12 +14,14 @@ var GithubApi = require('github');
 var shell = require('shelljs');
 //var git = require('simple-git');
 
+
 var copyDotFile = function(fileName) {
   this.fs.copy(
     this.templatePath('_' + fileName),
     this.destinationPath('.' + fileName)
   );
 };
+
 
 var copyTemplate = function(fileName) {
   this.fs.copyTpl(
@@ -31,9 +33,17 @@ var copyTemplate = function(fileName) {
 
 
 //var MiniNpmGenerator = yeoman.Base.extend({
-var MiniNpmGenerator = class extends Generator({
+var MiniNpmGenerator = class extends Generator {
 
-  initializing: function () {
+  constructor(args, opts) {
+    // Calling the super constructor is important so our generator is correctly set up
+    super(args, opts);
+
+    // Next, add your custom code
+    //this.option('babel'); // This method adds support for a `--babel` flag
+  }
+
+  initializing() {
     this.pkg       = require('../package.json');
     this.gitconfig = gitconfig.sync();
 
@@ -42,15 +52,19 @@ var MiniNpmGenerator = class extends Generator({
     //    this.installDependencies();
     //  }
     //});
-  },
-  prompting:  function () {
+  }
+
+
+  prompting() {
     var done = this.async();
     this.log(chalk.magenta('This Yeoman generator will scaffold new npm package for you.'));
     this.log('Make sure you \'mkdir <package-name>; cd <package-name>\'.');
 
     this._promptPkgName();
-  },
-  _promptPkgName: function () {
+  }
+
+
+  _promptPkgName() {
     var done    = this.async();
     var prompts = [{
       name:     'pkgName',
@@ -87,8 +101,10 @@ var MiniNpmGenerator = class extends Generator({
       //done();
 
     }.bind(this));
-  },
-  _promptOther: function () {
+  }
+
+
+  _promptOther() {
     var done = this.async();
 
     var prompts = [{
@@ -174,13 +190,14 @@ var MiniNpmGenerator = class extends Generator({
 
       done();
     }.bind(this));
-  },
+  }
 
-  writing: function () {
+
+  writing() {
     this._write();
-  },
+  }
 
-  _write: function() {
+  _write() {
     mkdirp('test');
 
     this.template('package.json',  'package.json');
@@ -208,9 +225,9 @@ var MiniNpmGenerator = class extends Generator({
     if (this.git) {
       this._createRepo();
     }
-  },
+  }
 
-  _createRepo: function () {
+  _createRepo() {
     var self = this;
 
     var github = new GithubApi({
@@ -231,9 +248,9 @@ var MiniNpmGenerator = class extends Generator({
 
       self._gitInitAndPush(self.githubName, self.pkgName);
     });
-  },
+  }
 
-  _gitInitAndPush: function(githubName, pkgName) {
+  _gitInitAndPush(githubName, pkgName) {
     var self = this;
 
     var commands = [
@@ -249,14 +266,16 @@ var MiniNpmGenerator = class extends Generator({
       shell.exec(cmd);
     });
     self.log('git done');
-  },
+  }
 
-  install: function() {
+  install() {
     if (!this.options[ 'skip-install' ]) {
       //this.installDependencies();
       this.npmInstall();
     }
   }
-});
+
+};
+
 
 module.exports = MiniNpmGenerator;
