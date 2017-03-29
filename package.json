@@ -1,6 +1,6 @@
 {
   "name": "generator-mini-package",
-  "version": "0.0.10",
+  "version": "0.0.11",
   "description": "A npm module scaffolding generator for Yeoman",
   "main": "app/index.js",
   "scripts": {
