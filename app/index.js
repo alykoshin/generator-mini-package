@@ -15,23 +15,6 @@ var shell = require('shelljs');
 //var git = require('simple-git');
 
 
-var copyDotFile = function(fileName) {
-  this.fs.copy(
-    this.templatePath('_' + fileName),
-    this.destinationPath('.' + fileName)
-  );
-};
-
-
-var copyTemplate = function(fileName) {
-  this.fs.copyTpl(
-    this.templatePath('_' + fileName),
-    this.destinationPath(fileName),
-    this.props
-  );
-};
-
-
 //var MiniNpmGenerator = yeoman.Base.extend({
 var MiniNpmGenerator = class extends Generator {
 
@@ -44,6 +27,7 @@ var MiniNpmGenerator = class extends Generator {
   }
 
   initializing() {
+    console.log('[initializing]');
     this.pkg       = require('../package.json');
     this.gitconfig = gitconfig.sync();
 
@@ -56,56 +40,61 @@ var MiniNpmGenerator = class extends Generator {
 
 
   prompting() {
-    var done = this.async();
+    console.log('[prompting]');
+    //var done = this.async();
     this.log(chalk.magenta('This Yeoman generator will scaffold new npm package for you.'));
-    this.log('Make sure you \'mkdir <package-name>; cd <package-name>\'.');
+    this.log('Make sure you already did:\'mkdir <package-name>; cd <package-name>\'.');
 
-    this._promptPkgName();
+    return this._promptPkgName();
   }
 
 
   _promptPkgName() {
-    var done    = this.async();
-    var prompts = [{
-      name:     'pkgName',
-      message:  'What is the name of the package?',
-      default:  slugify(this.appname),
-      validate: function (str) {
-        return str.length > 0;
+    //var done    = this.async();
+
+    var prompts = [
+      {
+        name:     'pkgName',
+        message:  'What is the name of the package?',
+        default:  slugify(this.appname),
+        validate: function (str) {
+          return str.length > 0;
+        }
+      }, {
+        type:    'confirm',
+        name:    'pkgName',
+        message: 'The name above already exists on npm, choose another?',
+        default: true,
+        when:    function (answers) {
+          //var done = this.async();
+          process.stdout.write(chalk.yellow('Checking if name is available on NPM... '));
+          return npmName(answers.pkgName)
+            .then(function (available) {
+              if (available) process.stdout.write(chalk.green('ok\n'));
+              else process.stdout.write(chalk.red('NAME NOT AVAILABLE\n'));
+              //process.stdout.clearLine();
+              //process.stdout.cursorTo(0);
+              //done(available);
+            })
+            ;
+        }
       }
-    }, {
-      type:    'confirm',
-      name:    'pkgName',
-      message: 'The name above already exists on npm, choose another?',
-      default: true,
-      when:    function (answers) {
-        var done = this.async();
-        process.stdout.write(chalk.yellow('Checking if name is available on NPM...'));
-        npmName(answers.pkgName)
-          .then(function (available) {
-            process.stdout.clearLine();
-            process.stdout.cursorTo(0);
-            if (!available) {
-              done(true);
-            }
-            done(false);
-          });
-      }
-    }];
-    this.prompt(prompts, function (props) {
-      this.pkgName    = slugify(props.pkgName);
-      this.pkgVarName = _.camelCase(props.pkgName);
+    ];
+    return this.prompt(prompts)
+      .then((props) => {
+        this.pkgName    = slugify(props.pkgName);
+        this.pkgVarName = _.camelCase(props.pkgName);
 
-      return this._promptOther();
+        return this._promptOther();
 
-      //done();
+        //done();
 
-    }.bind(this));
+      });
   }
 
 
   _promptOther() {
-    var done = this.async();
+    //var done = this.async();
 
     var prompts = [{
       name:     'githubName',
@@ -118,7 +107,7 @@ var MiniNpmGenerator = class extends Generator {
       name:     'githubToken',
       message:  'What is your github oauth token (git config --global github.token)?',
       default:  (this.gitconfig.github && this.gitconfig.github.token) || '',
-      validate: function (str) {
+      validate: (str) => {
         return str.length > 0;
       }
     }, {
@@ -130,23 +119,23 @@ var MiniNpmGenerator = class extends Generator {
       name:    'keywords',
       message: 'Package keywords?',
       store   : true,
-      filter:  function (value) {
+      filter:  (value) => {
         if (typeof value === 'string') {
           value = value.split(',');
         }
         value = value
-          .map(function (val) {
+          .map((val) => {
             val = val.replace(/[\s'"]/g,''); // Remove spaces, single and double quotes
             return val;//.trim();
           })
-          .filter(function (val) {
+          .filter((val) => {
             return val.length > 0;
           })
-          //.map(function (val) {              // Add double quotes
-          //  return '"' + val + '"';
-          //})
-          ;
-        console.log('keywords:', value);
+        //.map(function (val) {              // Add double quotes
+        //  return '"' + val + '"';
+        //})
+        ;
+        this.log('keywords:', value);
         return value;
       }
     }, {
@@ -175,52 +164,98 @@ var MiniNpmGenerator = class extends Generator {
       default: false
     }];
 
-    this.prompt(prompts, function (props) {
+    return this.prompt(prompts)
+      .then((props) => {
 
-      this.pkgDesc      = props.pkgDesc;
-      this.keywords     = props.keywords;
-      this.githubName   = props.githubName;
-      this.githubToken  = props.githubToken;
-      this.fullName     = props.fullName;
-      this.emailAddress = props.emailAddress;
-      this.git          = props.git;
-      this.cli          = props.cli;
+        this.pkgDesc      = props.pkgDesc;
+        this.keywords     = props.keywords;
+        this.githubName   = props.githubName;
+        this.githubToken  = props.githubToken;
+        this.fullName     = props.fullName;
+        this.emailAddress = props.emailAddress;
+        this.git          = props.git;
+        this.cli          = props.cli;
 
-      this.currentYear = new Date().getFullYear();
+        this.currentYear = new Date().getFullYear();
 
-      done();
-    }.bind(this));
+      });
   }
 
+
+  configuring() {
+    this.log('[configuring]');
+  }
+
+
+  default() {
+    this.log('[default]');
+  }
 
   writing() {
-    this._write();
+    this.log('[writing]');
+    return this._writing();
   }
 
-  _write() {
-    mkdirp('test');
+  conflicts() {
+    this.log('[conflicts]');
+  }
 
-    this.template('package.json',  'package.json');
-    this.template('README.md',     'README.md');
-    this.template('LICENSE',       'LICENSE');
-    this.template('lib/index.js',  'lib/index.js');
-    this.template('test/index.js', 'test/index.js');
+  install() {
+    this.log('[install]');
+    return this._install();
+  }
 
-    this.template('index.js',   'index.js');
+  end() {
+    this.log('[end]');
+  }
+
+
+  _copyFile(fileName) {
+    this.fs.copy(
+      this.templatePath(fileName),
+      this.destinationPath(fileName)
+    );
+  }
+
+  _copyDotFile(fileName) {
+    this.fs.copy(
+      this.templatePath('_' + fileName),
+      this.destinationPath('.' + fileName)
+    );
+  }
+
+  _copyTplFile(fileName) {
+    this.fs.copyTpl(
+      this.templatePath(fileName),
+      this.destinationPath(fileName),
+      this
+    );
+  }
+
+
+  _writing() {
+    //mkdirp('test');
+    this._copyTplFile('package.json');
+    this._copyTplFile('README.md');
+    this._copyTplFile('LICENSE');
+    this._copyTplFile('lib/index.js');
+    this._copyTplFile('test/index.js');
+
+    this._copyTplFile('index.js');
     if (this.cli) {
-      this.template('cli.js',   'cli.js');
+      this._copyTplFile('cli.js');
     }
 
-    this.copy('_editorconfig',  '.editorconfig');
-    this.copy('_eslintrc',      '.eslintrc');
-    this.copy('_eslintignore',  '.eslintignore');
-    this.copy('_gitattributes', '.gitattributes');
-    this.copy('_gitignore',     '.gitignore');
-    this.copy('_jshintrc',      '.jshintrc');
-    this.copy('_jsinspectrc',   '.jsinspectrc');
-    this.copy('_travis.yml',    '.travis.yml');
+    this._copyDotFile('editorconfig');
+    this._copyDotFile('eslintrc');
+    this._copyDotFile('eslintignore');
+    this._copyDotFile('gitattributes');
+    this._copyDotFile('gitignore');
+    this._copyDotFile('jshintrc');
+    this._copyDotFile('jsinspectrc');
+    this._copyDotFile('travis.yml');
 
-    this.copy('inch.json',      'inch.json');
+    this._copyFile('inch.json');
 
     if (this.git) {
       this._createRepo();
@@ -268,7 +303,7 @@ var MiniNpmGenerator = class extends Generator {
     self.log('git done');
   }
 
-  install() {
+  _install() {
     if (!this.options[ 'skip-install' ]) {
       //this.installDependencies();
       this.npmInstall();
