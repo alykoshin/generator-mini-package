@@ -27,7 +27,43 @@ var MiniNpmGenerator = class extends Generator {
   }
 
   initializing() {
-    console.log('[initializing]');
+    this.log('[initializing]');
+    return this._initializing();
+  }
+
+  prompting() {
+    this.log('[prompting]');
+    return this._prompting();
+  }
+
+  configuring() {
+    this.log('[configuring]');
+  }
+
+  default() {
+    this.log('[default]');
+  }
+
+  writing() {
+    this.log('[writing]');
+    return this._writing();
+  }
+
+  conflicts() {
+    this.log('[conflicts]');
+  }
+
+  install() {
+    this.log('[install]');
+    return this._install();
+  }
+
+  end() {
+    this.log('[end]');
+  }
+
+
+  _initializing() {
     this.pkg       = require('../package.json');
     this.gitconfig = gitconfig.sync();
 
@@ -39,8 +75,7 @@ var MiniNpmGenerator = class extends Generator {
   }
 
 
-  prompting() {
-    console.log('[prompting]');
+   _prompting() {
     //var done = this.async();
     this.log(chalk.magenta('This Yeoman generator will scaffold new npm package for you.'));
     this.log('Make sure you already did:\'mkdir <package-name>; cd <package-name>\'.');
@@ -179,34 +214,6 @@ var MiniNpmGenerator = class extends Generator {
         this.currentYear = new Date().getFullYear();
 
       });
-  }
-
-
-  configuring() {
-    this.log('[configuring]');
-  }
-
-
-  default() {
-    this.log('[default]');
-  }
-
-  writing() {
-    this.log('[writing]');
-    return this._writing();
-  }
-
-  conflicts() {
-    this.log('[conflicts]');
-  }
-
-  install() {
-    this.log('[install]');
-    return this._install();
-  }
-
-  end() {
-    this.log('[end]');
   }
 
 
