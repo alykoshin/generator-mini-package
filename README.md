@@ -7,6 +7,8 @@
 [![Dependency Status](https://david-dm.org/alykoshin/generator-mini-package/status.svg)](https://david-dm.org/alykoshin/generator-mini-package#info=dependencies)
 [![devDependency Status](https://david-dm.org/alykoshin/generator-mini-package/dev-status.svg)](https://david-dm.org/alykoshin/generator-mini-package#info=devDependencies)
 
+[![Known Vulnerabilities](https://snyk.io/test/github/alykoshin/generator-mini-packaged/badge.svg)](https://snyk.io/test/github/alykoshin/generator-mini-package)
+
 
 # generator-mini-package
 

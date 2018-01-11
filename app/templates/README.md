@@ -7,6 +7,8 @@
 [![Dependency Status](https://david-dm.org/<%= githubName %>/<%= pkgName %>/status.svg)](https://david-dm.org/<%= githubName %>/<%= pkgName %>#info=dependencies)
 [![devDependency Status](https://david-dm.org/<%= githubName %>/<%= pkgName %>/dev-status.svg)](https://david-dm.org/<%= githubName %>/<%= pkgName %>#info=devDependencies)
 
+[![Known Vulnerabilities](https://snyk.io/test/github/<%= githubName %>/<%= pkgName %>/badge.svg)](https://snyk.io/test/github/<%= githubName %>/<%= pkgName %>)
+
 
 # <%= pkgName %>
 
