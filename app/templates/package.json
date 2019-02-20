@@ -3,6 +3,9 @@
   "version": "0.0.0",
   "description": "<%= pkgDesc %>",
   "main": "./index.js",
+  "bin": {
+    "<%= pkgName %>": "./cli.js"
+  },
   "engines": {
     "node": ">=0.10"
   },
